@@ -21,6 +21,9 @@ for companyTicker in tickers:
     data = json.loads(content.decode("utf8"))
     response.close()
 
+    #Number of items under Stat
+    #pprint("Length: "+str(len(data["stockEntityDetails"]["Stat"])))
+
     #check if object exists
     stockEntityObject=data.get("stockEntityDetails")
     if stockEntityObject:
