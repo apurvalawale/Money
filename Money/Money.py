@@ -4,16 +4,19 @@ import urllib.request
 import csv
 import datetime
 import requests
+import configparser
 
-#with open('C:\\Users\\admin\\Documents\\DataSets\\Money\\CY6UStockDetails.json') as f:
-
-#CY6U:
-#https://phone.finance.services.appex.bing.com/MarketV2.svc/XPlat-StockDetailsV1?symbols=143.1.CY6U.SES&lang=EN-GB&isEOD=False&isOTC=False&localizeFor=EN-SG&clientType=TABLET&clientVersion=1&Client-AppVersion=4.26.12334.0
-#https://phone.finance.services.appex.bing.com/Market.svc/M-TodayEquityV4?rtSymbols=143.1.CY6U.SES&chartSymbols=143.1.CY6U.SES&chartType=1D_5M&isETF=false&iseod=False&lang=EN-SG&localizeFor=EN-SG&Client-AppVersion=4.26.12334.0
+configParser = configparser.RawConfigParser()   
+configFilePath = r'Config.cfg'
+configParser.read(configFilePath)
+msftPath1=configParser.get('Paths', 'msftPath1')
+msftPath2=configParser.get('Paths', 'msftPath2')
+sgxPath=configParser.get('Paths', 'sgxPath')
+saveStockDataPath=configParser.get('Paths', 'saveStockDataPath')
 
 tickers=["CY6U","A17U","AU8U","M44U"]
 for companyTicker in tickers:
-    response=urllib.request.urlopen("https://phone.finance.services.appex.bing.com/MarketV2.svc/XPlat-StockDetailsV1?symbols=143.1."+companyTicker+".SES&lang=EN-GB&isEOD=False&isOTC=False&localizeFor=EN-SG&clientType=TABLET&clientVersion=1&Client-AppVersion=4.26.12334.0")
+    response=urllib.request.urlopen(msftPath1+companyTicker+msftPath2)
     content=response.read()
     data = json.loads(content.decode("utf8"))
     response.close()
@@ -71,7 +74,7 @@ for companyTicker in tickers:
         pprint(quickRatio)
 
         payload = {"id":ticker}
-        r = requests.post("https://sgx-premium.wealthmsi.com/sgx/price", data=json.dumps(payload))
+        r = requests.post(sgxPath, data=json.dumps(payload))
         r.headers["Content-Type"]="application/json"
         data=r.json()
         stockHighPrice=data["price"]["highPrice"]
@@ -79,11 +82,11 @@ for companyTicker in tickers:
         stockLowPrice=data["price"]["lowPrice"]
 
         fields=[datetime.datetime.now().strftime("%Y-%m-%d"),ticker,stockPrice,marketCapital,netIncome,outstandingShares,enterpriseValue,bookValuePerShare,earningsPerShare,priceToEarningsRatio,dividendYield,forwardDividendYield,debtToEquityRatio,payoutRatio,quickRatio,stockHighPrice,stockLowPrice]
-        with open("C:\\Users\\admin\\Documents\\Apurva Documents\\Investments\\Stock Data\\"+companyTicker+".csv", "a",newline='') as f:
+        with open(saveStockDataPath+companyTicker+".csv", "a",newline='') as f:
             writer = csv.writer(f)
             writer.writerow(fields)
     else:
-         with open("C:\\Users\\admin\\Documents\\Apurva Documents\\Investments\\Stock Data\\log.txt", "a",newline='') as f:
+         with open(saveStockDataPath+"log.txt", "a",newline='') as f:
             writer = csv.writer(f)
             fields=[datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),companyTicker,"Stock details wasn't found"]
             writer.writerow(fields)
