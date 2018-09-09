@@ -5,6 +5,7 @@ import csv
 import datetime
 import requests
 import configparser
+import platform
 
 configParser = configparser.RawConfigParser()   
 configFilePath = r'Config.cfg'
@@ -84,15 +85,17 @@ for companyTicker in tickers:
         #Stock Low Price
         stockLowPrice=data["price"]["lowPrice"]
 
-        fields=[datetime.datetime.now().strftime("%Y-%m-%d"),ticker,stockPrice,marketCapital,netIncome,outstandingShares,enterpriseValue,bookValuePerShare,earningsPerShare,priceToEarningsRatio,dividendYield,forwardDividendYield,debtToEquityRatio,payoutRatio,quickRatio,stockHighPrice,stockLowPrice]
-        with open(saveStockDataPath+companyTicker+".csv", "a",newline='') as f:
-            writer = csv.writer(f)
-            writer.writerow(fields)
+        if platform.system()=="Windows":
+            fields=[datetime.datetime.now().strftime("%Y-%m-%d"),ticker,stockPrice,marketCapital,netIncome,outstandingShares,enterpriseValue,bookValuePerShare,earningsPerShare,priceToEarningsRatio,dividendYield,forwardDividendYield,debtToEquityRatio,payoutRatio,quickRatio,stockHighPrice,stockLowPrice]
+            with open(saveStockDataPath+companyTicker+".csv", "a",newline='') as f:
+                writer = csv.writer(f)
+                writer.writerow(fields)
     else:
-         with open(saveStockDataPath+"log.txt", "a",newline='') as f:
-            writer = csv.writer(f)
-            fields=[datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),companyTicker,"Stock details wasn't found"]
-            writer.writerow(fields)
+        if platform.system()=="Windows":        
+            with open(saveStockDataPath+"log.txt", "a",newline='') as f:
+                writer = csv.writer(f)
+                fields=[datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),companyTicker,"Stock details wasn't found"]
+                writer.writerow(fields)
 
 
 
