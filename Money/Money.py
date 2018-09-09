@@ -30,6 +30,9 @@ for companyTicker in tickers:
         #Market Capital
         marketCapital=data["stockEntityDetails"]["Stat"][0]["Mc"]
         pprint(marketCapital)
+        #Net Income
+        netIncome=data["stockDetailsV2"]["Fh"]["In"]
+        pprint(netIncome)
         #Shares Outstanding
         outstandingShares=data["stockEntityDetails"]["Stat"][0]["shrsOs"]
         pprint(outstandingShares)
@@ -75,7 +78,7 @@ for companyTicker in tickers:
         #Stock Low Price
         stockLowPrice=data["price"]["lowPrice"]
 
-        fields=[datetime.datetime.now().strftime("%Y-%m-%d"),ticker,stockPrice,marketCapital,outstandingShares,enterpriseValue,bookValuePerShare,earningsPerShare,priceToEarningsRatio,dividendYield,forwardDividendYield,debtToEquityRatio,payoutRatio,quickRatio,stockHighPrice,stockLowPrice]
+        fields=[datetime.datetime.now().strftime("%Y-%m-%d"),ticker,stockPrice,marketCapital,netIncome,outstandingShares,enterpriseValue,bookValuePerShare,earningsPerShare,priceToEarningsRatio,dividendYield,forwardDividendYield,debtToEquityRatio,payoutRatio,quickRatio,stockHighPrice,stockLowPrice]
         with open("C:\\Users\\admin\\Documents\\Apurva Documents\\Investments\\Stock Data\\"+companyTicker+".csv", "a") as f:
             writer = csv.writer(f)
             writer.writerow(fields)
@@ -85,9 +88,5 @@ for companyTicker in tickers:
             fields=[datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),companyTicker,"Stock details wasn't found"]
             writer.writerow(fields)
 
-import matplotlib.pyplot as plt
-plt.plot([1,2,3,4])
-plt.ylabel('some numbers')
-plt.show()
 
 
