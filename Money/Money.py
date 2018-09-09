@@ -79,11 +79,11 @@ for companyTicker in tickers:
         stockLowPrice=data["price"]["lowPrice"]
 
         fields=[datetime.datetime.now().strftime("%Y-%m-%d"),ticker,stockPrice,marketCapital,netIncome,outstandingShares,enterpriseValue,bookValuePerShare,earningsPerShare,priceToEarningsRatio,dividendYield,forwardDividendYield,debtToEquityRatio,payoutRatio,quickRatio,stockHighPrice,stockLowPrice]
-        with open("C:\\Users\\admin\\Documents\\Apurva Documents\\Investments\\Stock Data\\"+companyTicker+".csv", "a") as f:
+        with open("C:\\Users\\admin\\Documents\\Apurva Documents\\Investments\\Stock Data\\"+companyTicker+".csv", "a",newline='') as f:
             writer = csv.writer(f)
             writer.writerow(fields)
     else:
-         with open("C:\\Users\\admin\\Documents\\Apurva Documents\\Investments\\Stock Data\\log.txt", "a") as f:
+         with open("C:\\Users\\admin\\Documents\\Apurva Documents\\Investments\\Stock Data\\log.txt", "a",newline='') as f:
             writer = csv.writer(f)
             fields=[datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),companyTicker,"Stock details wasn't found"]
             writer.writerow(fields)
